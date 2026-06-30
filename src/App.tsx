@@ -1829,7 +1829,7 @@ Optimization Summary: ${optimizationSummary}
         {/* --- DASHBOARD VIEW --- */}
         {currentView === 'dashboard' && (
           <>
-            <h1 className="text-white text-3xl font-black mb-8 tracking-tight">AI Prompt QA & Optimization Dashboard</h1>
+            <h1 className="text-white text-3xl font-black mb-8 tracking-tight">AI Prompt Optimizer</h1>
 
             <div className="border border-slate-800 bg-slate-900 rounded-2xl p-4 md:p-8 space-y-6 mb-12 shadow-sm">
               <h2 className="text-2xl font-black text-slate-200 ml-2 mb-2 tracking-tight">Phase 1: Original Prompt Evaluation</h2>
@@ -2200,12 +2200,12 @@ Optimization Summary: ${optimizationSummary}
                     </div>
                   </div>
                   
-                  <div className="flex gap-4">
-                    <button onClick={handleCopyFullReport} disabled={!hasOptimizedTest} className={`flex-1 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-xl text-sm ${!hasOptimizedTest ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-[#2563eb] hover:bg-blue-600 text-white'}`}>
-                      {isFullCopied ? <Check size={20} /> : <Clipboard size={20} />} Export Full Report
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <button onClick={handleCopyFullReport} disabled={!hasOptimizedTest} className={`flex-1 py-3.5 sm:py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-xl text-xs sm:text-sm ${!hasOptimizedTest ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-[#2563eb] hover:bg-blue-600 text-white'}`}>
+                      {isFullCopied ? <Check size={18} /> : <Clipboard size={18} />} Export Full Report
                     </button>
-                    <button onClick={() => setIsSaveModalOpen(true)} disabled={!hasOptimizedTest} className={`px-6 py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-xl text-sm ${!hasOptimizedTest ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white'}`}>
-                      <BookmarkPlus size={20} /> Save to Library
+                    <button onClick={() => setIsSaveModalOpen(true)} disabled={!hasOptimizedTest} className={`flex-1 py-3.5 sm:py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-xl text-xs sm:text-sm ${!hasOptimizedTest ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white'}`}>
+                      <BookmarkPlus size={18} /> Save to Library
                     </button>
                   </div>
                 </section>
@@ -2225,34 +2225,33 @@ Optimization Summary: ${optimizationSummary}
               </p>
             </div>
 
-            {/* Bulk Action Bar */}
             {selectedPromptIds.length > 0 && (
-              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-slate-900 border border-blue-500/50 shadow-2xl shadow-blue-500/20 rounded-2xl px-6 py-4 flex items-center gap-6 animate-in slide-in-from-bottom-4 duration-300">
+              <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-slate-900 border border-blue-500/50 shadow-2xl shadow-blue-500/20 rounded-2xl px-4 py-3 sm:px-6 sm:py-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-6 animate-in slide-in-from-bottom-4 duration-300 w-[92%] sm:w-auto">
                 <div className="flex items-center gap-2">
                   <div className="bg-blue-600 text-white text-xs font-black h-6 w-6 rounded-full flex items-center justify-center">
                     {selectedPromptIds.length}
                   </div>
-                  <span className="text-sm font-bold text-white uppercase tracking-wider">Prompts Selected</span>
+                  <span className="text-xs sm:text-sm font-bold text-white uppercase tracking-wider">Selected</span>
                 </div>
-                <div className="h-8 w-px bg-slate-800"></div>
-                <div className="flex gap-3">
+                <div className="hidden sm:block h-8 w-px bg-slate-800"></div>
+                <div className="flex flex-wrap justify-center gap-2">
                   <button 
                     onClick={handleBulkMove}
-                    className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all border border-slate-700"
+                    className="bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition-all border border-slate-700"
                   >
-                    <FolderInput size={14} /> Move to Folder
+                    <FolderInput size={12} /> Move
                   </button>
                   <button 
                     onClick={handleBulkDelete}
-                    className="bg-red-900/20 hover:bg-red-900/40 text-red-400 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all border border-red-900/30"
+                    className="bg-red-900/20 hover:bg-red-900/40 text-red-400 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition-all border border-red-900/30"
                   >
-                    <Trash2 size={14} /> Delete Selected
+                    <Trash2 size={12} /> Delete
                   </button>
                   <button 
                     onClick={() => setSelectedPromptIds([])}
-                    className="bg-slate-950 hover:bg-slate-900 text-slate-400 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 transition-all border border-slate-800"
+                    className="bg-slate-950 hover:bg-slate-900 text-slate-400 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold flex items-center gap-1.5 transition-all border border-slate-800"
                   >
-                    <X size={14} /> Clear
+                    <X size={12} /> Clear
                   </button>
                 </div>
               </div>
@@ -2458,44 +2457,32 @@ Optimization Summary: ${optimizationSummary}
                           <div key={folder} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
                             <div 
                               onClick={() => setOpenFolders(prev => ({ ...prev, [folder]: !isOpen }))}
-                              className={`bg-slate-800/30 px-6 py-5 flex justify-between items-center cursor-pointer hover:bg-slate-800/50 transition-colors ${isOpen ? 'border-b border-slate-800/50' : ''}`}
+                              className={`bg-slate-800/30 px-4 py-4 sm:px-6 sm:py-5 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center cursor-pointer hover:bg-slate-800/50 transition-colors ${isOpen ? 'border-b border-slate-800/50' : ''}`}
                             >
-                              <div className="flex items-center gap-5">
+                              <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full md:w-auto">
                                 <div className="flex items-center gap-3">
-                                   <Folder size={20} className="text-emerald-500/40"/> 
-                                   <h3 className="text-lg font-bold text-slate-300">{folder}</h3>
+                                  <Folder size={20} className="text-emerald-500/40 shrink-0"/> 
+                                  <h3 className="text-base sm:text-lg font-bold text-slate-300 truncate">{folder}</h3>
+                                  {selectedInFolder > 0 && (
+                                    <div className="flex items-center gap-1.5 bg-blue-600/10 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full border border-blue-500/20 shrink-0">
+                                      <div className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></div>
+                                      <span className="text-[9px] sm:text-[10px] font-black text-blue-400 uppercase tracking-tighter">{selectedInFolder} Selected</span>
+                                    </div>
+                                  )}
                                 </div>
                                 
-                                {selectedInFolder > 0 && (
-                                  <div className="flex items-center gap-2 bg-blue-600/10 px-3 py-1 rounded-full border border-blue-500/20">
-                                    <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></div>
-                                    <span className="text-[10px] font-black text-blue-400 uppercase tracking-tighter">{selectedInFolder} Selected</span>
-                                  </div>
-                                )}
-
-                                <div className="flex items-center gap-3 ml-2" onClick={e => e.stopPropagation()}>
+                                <div className="flex flex-wrap gap-2" onClick={e => e.stopPropagation()}>
                                   {folder !== 'Misc' && (
                                     <>
-                                      <button onClick={() => handleRenameFolder(folder)} className="flex items-center gap-1.5 text-slate-600 hover:text-blue-400 transition-colors px-3 py-1.5 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-blue-500/30 group">
-                                        <Pencil size={12} className="group-hover:scale-110 transition-transform" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest">Rename</span>
+                                      <button onClick={() => handleRenameFolder(folder)} className="flex items-center gap-1.5 text-slate-500 hover:text-blue-400 transition-colors px-2 py-1 rounded-md bg-slate-950/40 border border-slate-800 hover:border-blue-500/30 group">
+                                        <Pencil size={10} className="group-hover:scale-110 transition-transform" />
+                                        <span className="text-[9px] font-black uppercase tracking-widest">Rename</span>
                                       </button>
-                                      <button onClick={() => handleDeleteFolder(folder)} className="flex items-center gap-1.5 text-slate-600 hover:text-red-400 transition-colors px-3 py-1.5 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-red-500/30 group">
-                                        <Trash2 size={12} className="group-hover:scale-110 transition-transform" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest">Delete</span>
+                                      <button onClick={() => handleDeleteFolder(folder)} className="flex items-center gap-1.5 text-slate-500 hover:text-red-400 transition-colors px-2 py-1 rounded-md bg-slate-950/40 border border-slate-800 hover:border-red-500/30 group">
+                                        <Trash2 size={10} className="group-hover:scale-110 transition-transform" />
+                                        <span className="text-[9px] font-black uppercase tracking-widest">Delete</span>
                                       </button>
                                     </>
-                                  )}
-                                  
-                                  {folderPrompts.length > 0 && (
-                                    <button 
-                                      onClick={() => handleExportPDF(folder)}
-                                      className="flex items-center gap-1.5 text-slate-500 hover:text-orange-400 transition-colors px-3 py-1.5 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-orange-500/30 group"
-                                      title="Export this folder to PDF"
-                                    >
-                                      <FileDown size={12} className="group-hover:scale-110 transition-transform" />
-                                      <span className="text-[10px] font-black uppercase tracking-widest">Export PDF</span>
-                                    </button>
                                   )}
                                   
                                   {folderPrompts.length > 0 && (
@@ -2509,26 +2496,28 @@ Optimization Summary: ${optimizationSummary}
                                           setSelectedPromptIds([...new Set([...selectedPromptIds, ...folderIds])]);
                                         }
                                       }}
-                                      className="flex items-center gap-1.5 text-slate-600 hover:text-emerald-400 transition-colors px-3 py-1.5 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-emerald-500/30 group"
+                                      className="flex items-center gap-1.5 text-slate-500 hover:text-emerald-400 transition-colors px-2 py-1 rounded-md bg-slate-950/40 border border-slate-800 hover:border-emerald-500/30 group"
                                     >
-                                      {folderPrompts.every(p => selectedPromptIds.includes(p.id)) ? <CheckSquare size={12} className="text-emerald-500" /> : <Square size={12} />}
-                                      <span className="text-[10px] font-black uppercase tracking-widest">Select All</span>
+                                      {folderPrompts.every(p => selectedPromptIds.includes(p.id)) ? <CheckSquare size={10} className="text-emerald-500" /> : <Square size={10} />}
+                                      <span className="text-[9px] font-black uppercase tracking-widest">Select All</span>
                                     </button>
                                   )}
                                 </div>
                               </div>
                               
-                              <div className="flex items-center gap-4">
-                                <button 
-                                  onClick={(e) => { e.stopPropagation(); handleExportPDF(folder); }}
-                                  className="flex items-center gap-1.5 text-slate-500 hover:text-emerald-400 transition-colors px-2 py-1 rounded-md bg-slate-950/40 border border-slate-800 hover:border-emerald-500/30 group"
-                                  title="Export this folder to PDF"
-                                >
-                                  <FileDown size={12} className="group-hover:scale-110 transition-transform" />
-                                  <span className="text-[10px] font-black uppercase tracking-widest">Export PDF</span>
-                                </button>
-                                <span className="text-xs font-bold text-slate-500 tracking-wider">{folderPrompts.length} Prompts</span>
-                                {isOpen ? <ChevronUp size={18} className="text-slate-500" /> : <ChevronDown size={18} className="text-slate-500" />}
+                              <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto pt-3 md:pt-0 border-t border-slate-800/40 md:border-none">
+                                {folderPrompts.length > 0 && (
+                                  <button 
+                                    onClick={(e) => { e.stopPropagation(); handleExportPDF(folder); }}
+                                    className="flex items-center gap-1.5 text-slate-500 hover:text-orange-400 transition-colors px-2 py-1 rounded-md bg-slate-950/40 border border-slate-800 hover:border-orange-500/30 group"
+                                    title="Export this folder to PDF"
+                                  >
+                                    <FileDown size={10} className="group-hover:scale-110 transition-transform" />
+                                    <span className="text-[9px] font-black uppercase tracking-widest">Export PDF</span>
+                                  </button>
+                                )}
+                                <span className="text-xs font-bold text-slate-500 tracking-wider shrink-0">{folderPrompts.length} Prompts</span>
+                                {isOpen ? <ChevronUp size={16} className="text-slate-500 shrink-0" /> : <ChevronDown size={16} className="text-slate-500 shrink-0" />}
                               </div>
                             </div>
 
@@ -2538,10 +2527,10 @@ Optimization Summary: ${optimizationSummary}
                                   <p className="text-slate-600 text-sm italic py-10 text-center bg-slate-950/30 rounded-2xl border border-dashed border-slate-800/50">This folder is empty.</p>
                                 ) : (
                                   folderPrompts.map(prompt => (
-                                    <div key={prompt.id} className={`bg-slate-950 border rounded-2xl p-8 transition-all duration-300 ${selectedPromptIds.includes(prompt.id) ? 'border-blue-500 ring-2 ring-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.15)]' : 'border-slate-800 hover:border-slate-700'}`}>
-                                      <div className="flex justify-between items-start mb-8 border-b border-slate-800/50 pb-6">
-                                        <div className="flex gap-6">
-                                          <div className="pt-1.5">
+                                    <div key={prompt.id} className={`bg-slate-950 border rounded-2xl p-4 sm:p-8 transition-all duration-300 ${selectedPromptIds.includes(prompt.id) ? 'border-blue-500 ring-2 ring-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.15)]' : 'border-slate-800 hover:border-slate-700'}`}>
+                                      <div className="flex flex-col md:flex-row justify-between items-start mb-6 md:mb-8 border-b border-slate-800/50 pb-6 gap-4 md:gap-6">
+                                        <div className="flex gap-4 sm:gap-6 w-full md:w-auto">
+                                          <div className="pt-1.5 shrink-0">
                                             <input 
                                               type="checkbox" 
                                               checked={selectedPromptIds.includes(prompt.id)}
@@ -2549,24 +2538,24 @@ Optimization Summary: ${optimizationSummary}
                                                 if (e.target.checked) setSelectedPromptIds([...selectedPromptIds, prompt.id]);
                                                 else setSelectedPromptIds(selectedPromptIds.filter(id => id !== prompt.id));
                                               }}
-                                              className="w-6 h-6 rounded-lg border-slate-700 bg-slate-900 text-blue-600 focus:ring-blue-500 focus:ring-offset-slate-950 cursor-pointer transition-all shadow-inner"
+                                              className="w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-slate-700 bg-slate-900 text-blue-600 focus:ring-blue-500 focus:ring-offset-slate-950 cursor-pointer transition-all shadow-inner"
                                             />
                                           </div>
                                           <div>
-                                            <h3 className="font-bold text-2xl text-blue-300 mb-3 tracking-tight">{prompt.title}</h3>
+                                            <h3 className="font-bold text-xl sm:text-2xl text-blue-300 mb-2 sm:mb-3 tracking-tight">{prompt.title}</h3>
                                             <div className="flex flex-wrap gap-2">
-                                              <span className="text-[10px] font-black bg-blue-900/30 text-blue-400 px-3 py-1 rounded-lg border border-blue-800/50 uppercase tracking-[0.15em]">{prompt.type}</span>
-                                              {prompt.tags.map(t => <span key={t} className="text-[10px] font-bold bg-slate-800 text-slate-500 px-3 py-1 rounded-lg uppercase tracking-wider">{t}</span>)}
+                                              <span className="text-[10px] font-black bg-blue-900/30 text-blue-400 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg border border-blue-800/50 uppercase tracking-[0.15em]">{prompt.type}</span>
+                                              {prompt.tags.map(t => <span key={t} className="text-[10px] font-bold bg-slate-800 text-slate-500 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg uppercase tracking-wider">{t}</span>)}
                                             </div>
                                           </div>
                                         </div>
-                                        <div className="text-right flex flex-col gap-2">
+                                        <div className="text-left md:text-right flex flex-col gap-1.5 w-full md:w-auto pt-4 md:pt-0 border-t border-slate-800/50 md:border-none">
                                           <div className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-1">Evaluation</div>
-                                          <div className="text-sm font-bold text-slate-300 flex justify-between gap-4">
+                                          <div className="text-sm font-bold text-slate-300 flex justify-between md:justify-end gap-4 sm:gap-6">
                                             <span className="opacity-50">Output:</span>
                                             <span className={getOutputTextClasses(prompt.outputQaScore, {t:prompt.outputQaScore})}>{prompt.outputQaScore}/12</span>
                                           </div>
-                                          <div className="text-sm font-bold text-slate-300 flex justify-between gap-4">
+                                          <div className="text-sm font-bold text-slate-300 flex justify-between md:justify-end gap-4 sm:gap-6">
                                             <span className="opacity-50">Quality:</span>
                                             <span className={getPromptTextClasses(prompt.promptQualityScore)}>{prompt.promptQualityScore}/7</span>
                                           </div>
@@ -2593,26 +2582,28 @@ Optimization Summary: ${optimizationSummary}
                                         </div>
                                       )}
 
-                                      <div className="flex justify-end gap-4 pt-6 border-t border-slate-800/30">
-                                        <button onClick={() => handleMovePrompt(prompt.id, folder)} className="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 hover:text-slate-100 px-6 py-3 rounded-xl text-sm font-black flex items-center gap-3 transition-all shadow-md active:scale-95">
-                                          <FolderInput size={18} /> Move
-                                        </button>
-                                        <button onClick={() => {
-                                            setModalConfig({
-                                              isOpen: true,
-                                              type: 'confirm',
-                                              title: 'Delete Prompt',
-                                              message: `Are you sure you want to permanently delete "${prompt.title}"?`,
-                                              confirmText: 'Delete Prompt',
-                                              cancelText: 'Cancel',
-                                              onConfirm: () => {
-                                                const newLib = savedPrompts.filter(p => p.id !== prompt.id);
-                                                saveLibraryToLocal(newLib);
-                                              }
-                                            });
-                                        }} className="text-sm font-black text-slate-600 hover:text-red-400 px-6 py-3 transition-all active:scale-95">Delete</button>
-                                        <button onClick={() => loadIntoDashboard(prompt.promptText)} className="bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-600/30 px-8 py-3 rounded-xl text-sm font-black flex items-center gap-3 transition-all shadow-lg hover:shadow-blue-500/20 active:scale-95">
-                                          <Play size={18} className="fill-current" /> Load Into Dashboard
+                                      <div className="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 pt-6 border-t border-slate-800/30">
+                                        <div className="flex gap-3 w-full sm:w-auto">
+                                          <button onClick={() => handleMovePrompt(prompt.id, folder)} className="flex-1 sm:flex-initial justify-center bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-400 hover:text-slate-100 px-4 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-all shadow-md active:scale-95">
+                                            <FolderInput size={16} /> Move
+                                          </button>
+                                          <button onClick={() => {
+                                              setModalConfig({
+                                                isOpen: true,
+                                                type: 'confirm',
+                                                title: 'Delete Prompt',
+                                                message: `Are you sure you want to permanently delete "${prompt.title}"?`,
+                                                confirmText: 'Delete Prompt',
+                                                cancelText: 'Cancel',
+                                                onConfirm: () => {
+                                                  const newLib = savedPrompts.filter(p => p.id !== prompt.id);
+                                                  saveLibraryToLocal(newLib);
+                                                }
+                                              });
+                                          }} className="flex-1 sm:flex-initial justify-center text-xs sm:text-sm font-black border border-slate-800 hover:border-red-950/20 text-slate-500 hover:text-red-400 px-4 py-3 rounded-xl hover:bg-red-500/10 transition-all active:scale-95">Delete</button>
+                                        </div>
+                                        <button onClick={() => loadIntoDashboard(prompt.promptText)} className="w-full sm:w-auto justify-center bg-blue-600/10 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-600/30 px-6 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-all shadow-lg hover:shadow-blue-500/20 active:scale-95">
+                                          <Play size={16} className="fill-current" /> Load Into Dashboard
                                         </button>
                                       </div>
                                     </div>
