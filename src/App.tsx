@@ -2411,30 +2411,30 @@ Optimization Summary: ${optimizationSummary}
             <div className="border border-slate-800 rounded-3xl overflow-hidden shadow-2xl bg-slate-900/40">
               <div 
                 onClick={toggleUserSection}
-                className={`px-8 py-7 flex justify-between items-center cursor-pointer transition-all ${isUserSectionOpen ? 'bg-slate-800/80' : 'bg-slate-900/60 hover:bg-slate-800/50'}`}
+                className={`px-4 py-4 sm:px-8 sm:py-7 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center cursor-pointer transition-all ${isUserSectionOpen ? 'bg-slate-800/80' : 'bg-slate-900/60 hover:bg-slate-800/50'}`}
               >
-                <div className="flex items-center gap-5">
-                  <div className={`p-4 rounded-2xl border transition-all duration-500 ${isUserSectionOpen ? 'bg-emerald-600 text-white border-blue-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-emerald-600/10 text-emerald-400 border-emerald-500/20'}`}>
-                    <Folder size={28} />
+                <div className="flex items-center gap-3 sm:gap-5 w-full sm:w-auto">
+                  <div className={`p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-500 ${isUserSectionOpen ? 'bg-emerald-600 text-white border-blue-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'bg-emerald-600/10 text-emerald-400 border-emerald-500/20'}`}>
+                    <Folder size={24} className="sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-black text-white tracking-tight">My Prompt Library</h2>
-                    <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1.5 opacity-70">Your saved and custom prompts</p>
+                    <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">My Prompt Library</h2>
+                    <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-widest mt-1 opacity-70">Your saved and custom prompts</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-6" onClick={e => e.stopPropagation()}>
-                  <button onClick={handleCreateFolder} className="bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white px-5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all border border-emerald-500/30 shadow-lg active:scale-95">
-                    <FolderPlus size={16} /> New Folder
+                <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-6 w-full sm:w-auto pt-3 sm:pt-0 border-t border-slate-800/40 sm:border-none" onClick={e => e.stopPropagation()}>
+                  <button onClick={handleCreateFolder} className="flex-1 sm:flex-initial justify-center bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white px-4 py-2 rounded-lg font-black text-[10px] sm:text-xs flex items-center gap-1.5 transition-all border border-emerald-500/30 shadow-lg active:scale-95">
+                    <FolderPlus size={14} /> New Folder
                   </button>
-                  <span className="text-xs font-black text-slate-500 bg-slate-950/50 px-5 py-2 rounded-full border border-slate-800 tracking-widest">{savedPrompts.length} Prompts</span>
-                  <div onClick={toggleUserSection} className={`cursor-pointer transition-transform duration-300 ${isUserSectionOpen ? 'rotate-180' : 'rotate-0'}`}>
-                    <ChevronDown size={32} className={isUserSectionOpen ? "text-emerald-400" : "text-slate-600"} />
+                  <span className="text-[10px] sm:text-xs font-black text-slate-500 bg-slate-950/50 px-3 py-1.5 sm:px-5 sm:py-2 rounded-full border border-slate-800 tracking-widest shrink-0">{savedPrompts.length} Prompts</span>
+                  <div onClick={toggleUserSection} className={`cursor-pointer transition-transform duration-300 ${isUserSectionOpen ? 'rotate-180' : 'rotate-0'} shrink-0`}>
+                    <ChevronDown size={24} className={isUserSectionOpen ? "text-emerald-400" : "text-slate-600"} />
                   </div>
                 </div>
               </div>
 
               {isUserSectionOpen && (
-                <div className="p-8 space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
+                <div className="p-4 sm:p-8 space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
                   {savedPrompts.length === 0 && customFolders.length === 0 ? (
                     <div className="bg-slate-950/50 border border-slate-800 border-dashed rounded-3xl p-20 text-center">
                       <Folder size={72} className="mx-auto text-slate-800 mb-6 opacity-30" />
