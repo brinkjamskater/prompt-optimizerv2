@@ -2279,12 +2279,12 @@ Optimization Summary: ${optimizationSummary}
             </div>
 
             {/* --- TOP-LEVEL SECTION: STARTER PACKS --- */}
-            <div className="border border-slate-800 rounded-3xl overflow-hidden shadow-2xl bg-slate-900/40 mb-8">
+            <div className="border-none sm:border border-slate-800 rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-2xl bg-transparent sm:bg-slate-900/40 mb-8">
               <div 
                 onClick={toggleStarterSection}
                 className={`px-4 py-4 sm:px-8 sm:py-7 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center cursor-pointer transition-all ${isStarterSectionOpen ? 'bg-slate-800/80' : 'bg-slate-900/60 hover:bg-slate-800/50'}`}
               >
-                <div className="flex items-center gap-3 sm:gap-5">
+                <div className="flex items-center gap-3 sm:gap-5 w-full sm:w-auto">
                   <div className={`p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-500 ${isStarterSectionOpen ? 'bg-blue-600 text-white border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.3)]' : 'bg-blue-600/10 text-blue-400 border-blue-500/20'}`}>
                     <Sparkles size={24} className="sm:w-7 sm:h-7" />
                   </div>
@@ -2302,7 +2302,7 @@ Optimization Summary: ${optimizationSummary}
               </div>
 
               {isStarterSectionOpen && (
-                <div className="p-8 space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
+                <div className="p-0 sm:p-8 space-y-4 sm:space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
                   {(() => {
                     const starterCategories = [...new Set(STARTER_PACKS.map(p => p.folder))].sort();
 return starterCategories.map(category => {
@@ -2310,7 +2310,7 @@ return starterCategories.map(category => {
                    const isOpen = openFolders[`starter-${category}`];
 
                    return (
-                     <div key={`starter-${category}`} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+                     <div key={`starter-${category}`} className="bg-slate-900 border-y sm:border border-slate-800 rounded-none sm:rounded-xl overflow-hidden shadow-sm">
                        <div 
                          onClick={() => setOpenFolders(prev => ({ ...prev, [`starter-${category}`]: !isOpen }))}
                          className={`bg-slate-800/30 px-4 py-4 sm:px-6 sm:py-5 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center cursor-pointer hover:bg-slate-800/50 transition-colors ${isOpen ? 'border-b border-slate-800/50' : ''}`}
@@ -2408,7 +2408,7 @@ return starterCategories.map(category => {
             <div className="h-px bg-slate-800/50 my-6"></div>
 
             {/* --- TOP-LEVEL SECTION: MY PROMPT LIBRARY --- */}
-            <div className="border border-slate-800 rounded-3xl overflow-hidden shadow-2xl bg-slate-900/40">
+            <div className="border-none sm:border border-slate-800 rounded-none sm:rounded-3xl overflow-hidden shadow-none sm:shadow-2xl bg-transparent sm:bg-slate-900/40">
               <div 
                 onClick={toggleUserSection}
                 className={`px-4 py-4 sm:px-8 sm:py-7 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center cursor-pointer transition-all ${isUserSectionOpen ? 'bg-slate-800/80' : 'bg-slate-900/60 hover:bg-slate-800/50'}`}
@@ -2434,7 +2434,7 @@ return starterCategories.map(category => {
               </div>
 
               {isUserSectionOpen && (
-                <div className="p-4 sm:p-8 space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
+                <div className="p-0 sm:p-8 space-y-4 sm:space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
                   {savedPrompts.length === 0 && customFolders.length === 0 ? (
                     <div className="bg-slate-950/50 border border-slate-800 border-dashed rounded-3xl p-20 text-center">
                       <Folder size={72} className="mx-auto text-slate-800 mb-6 opacity-30" />
@@ -2456,7 +2456,7 @@ return starterCategories.map(category => {
                         const selectedInFolder = folderPrompts.filter(p => selectedPromptIds.includes(p.id)).length;
 
                         return (
-                          <div key={folder} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
+                          <div key={folder} className="bg-slate-900 border-y sm:border border-slate-800 rounded-none sm:rounded-xl overflow-hidden shadow-sm">
                             <div 
                               onClick={() => setOpenFolders(prev => ({ ...prev, [folder]: !isOpen }))}
                               className={`bg-slate-800/30 px-4 py-4 sm:px-6 sm:py-5 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center cursor-pointer hover:bg-slate-800/50 transition-colors ${isOpen ? 'border-b border-slate-800/50' : ''}`}
