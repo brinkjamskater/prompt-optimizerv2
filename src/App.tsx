@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Clipboard, Bot, Loader2, Lock, Unlock, Target, Check, Lightbulb, Sparkles, ArrowRight, AlertTriangle, ShieldCheck, Settings2, ChevronDown, ChevronUp, Mic, BookOpen, Download, Upload, FileDown, Folder, Play, BookmarkPlus, X, FileText, Pencil, Trash2, FolderInput, FolderPlus, MoreHorizontal, CheckSquare, Square } from 'lucide-react';
+import { Clipboard, Bot, Loader2, Lock, Unlock, Target, Check, Lightbulb, Sparkles, ArrowRight, AlertTriangle, ShieldCheck, Settings2, ChevronDown, ChevronUp, Mic, BookOpen, Download, Upload, FileDown, Folder, Play, BookmarkPlus, X, FileText, Pencil, Trash2, FolderInput, FolderPlus, MoreHorizontal, CheckSquare, Square, HelpCircle, Sliders, Award } from 'lucide-react';
 
 let onUnauthorizedError = null;
 
@@ -320,6 +320,7 @@ const App = () => {
 
   // Global Navigation State
   const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard' | 'library' | 'admin'
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   // Authentication State
   const [accessToken, setAccessToken] = useState(() => localStorage.getItem('access_token'));
@@ -1738,7 +1739,7 @@ Optimization Summary: ${optimizationSummary}
               <Bot size={36} />
             </div>
             <h1 className="text-2xl font-black text-white tracking-tight">Prompt Optimizer</h1>
-            <p className="text-slate-400 text-sm mt-1">Portfolio Evaluation Dashboard</p>
+            <p className="text-slate-400 text-sm mt-1">Advanced AI Engineering Workspace</p>
           </div>
 
           <form onSubmit={handleLoginSubmit} className="space-y-6">
@@ -1770,6 +1771,15 @@ Optimization Summary: ${optimizationSummary}
               Enter Dashboard <ArrowRight size={16} />
             </button>
           </form>
+
+          <div className="mt-5 text-center">
+            <button 
+              onClick={() => setIsHelpModalOpen(true)}
+              className="text-xs text-slate-400 hover:text-slate-200 transition-colors font-bold flex items-center justify-center gap-1.5 mx-auto py-2 px-4 rounded-xl hover:bg-slate-800/40 border border-slate-800/50"
+            >
+              <HelpCircle size={14} className="text-blue-400" /> Learn How It Works
+            </button>
+          </div>
 
           {(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && (
             <div className="mt-8 pt-6 border-t border-slate-800/60 text-center">
@@ -1817,6 +1827,9 @@ Optimization Summary: ${optimizationSummary}
                   <Lock size={16} /> Console
                 </button>
               )}
+              <button onClick={() => setIsHelpModalOpen(true)} className="flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-slate-400 hover:text-slate-200 hover:bg-slate-800 text-xs sm:text-sm">
+                <HelpCircle size={16} className="text-blue-400" /> Help
+              </button>
             </div>
 
             <div className="flex justify-between sm:justify-end items-center gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t border-slate-800/60 sm:border-none">
@@ -2913,6 +2926,103 @@ return starterCategories.map(category => {
                   Cancel
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Help Modal */}
+      {isHelpModalOpen && (
+        <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-700/80 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div className="bg-slate-800/80 px-6 py-4 flex justify-between items-center border-b border-slate-700">
+              <h2 className="font-black text-lg text-white flex items-center gap-2">
+                <HelpCircle size={22} className="text-blue-400" /> How Prompt Optimizer Works
+              </h2>
+              <button onClick={() => setIsHelpModalOpen(false)} className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-700/50 transition-colors">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-6 md:p-8 space-y-6 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 leading-relaxed text-sm">
+              <div className="space-y-2">
+                <h3 className="font-bold text-base text-blue-300 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                  Overview
+                </h3>
+                <p className="text-slate-300">
+                  Prompt Optimizer is an interactive sandbox built to analyze, grade, and automatically upgrade your LLM prompts. By evaluating raw inputs against structured engineering guidelines, it diagnoses weaknesses, resolves context gaps, and lets you organize your optimized prompts in a local template library.
+                </p>
+              </div>
+
+              <div className="space-y-4 border-t border-slate-800/50 pt-4">
+                <h3 className="font-bold text-base text-blue-300 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                  Workflow Steps
+                </h3>
+                
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="bg-slate-950/40 p-4 rounded-2xl border border-slate-800/60">
+                    <h4 className="font-bold text-slate-200 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                      <Target size={14} className="text-blue-400" /> 1. Evaluate
+                    </h4>
+                    <p className="text-xs text-slate-400">
+                      Paste an existing prompt and its LLM response. The engine diagnoses errors and scores it against structural benchmarks (Instruction following, Completeness, etc.).
+                    </p>
+                  </div>
+                  
+                  <div className="bg-slate-950/40 p-4 rounded-2xl border border-slate-800/60">
+                    <h4 className="font-bold text-slate-200 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                      <Sliders size={14} className="text-blue-400" /> 2. Configure
+                    </h4>
+                    <p className="text-xs text-slate-400">
+                      Add style constraints, toggle tone guides, define custom guidelines, and choose a privacy strategy to automatically filter or prompt for confidential details.
+                    </p>
+                  </div>
+
+                  <div className="bg-slate-950/40 p-4 rounded-2xl border border-slate-800/60">
+                    <h4 className="font-bold text-slate-200 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                      <Sparkles size={14} className="text-blue-400" /> 3. Optimize
+                    </h4>
+                    <p className="text-xs text-slate-400">
+                      Answer auto-generated clarifying questions to fill missing context gaps, then generate a polished, optimized version of the prompt.
+                    </p>
+                  </div>
+
+                  <div className="bg-slate-950/40 p-4 rounded-2xl border border-slate-800/60">
+                    <h4 className="font-bold text-slate-200 text-xs uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                      <Award size={14} className="text-blue-400" /> 4. Retest & Save
+                    </h4>
+                    <p className="text-xs text-slate-400">
+                      Run the optimized prompt to compare side-by-side scorecard improvement metrics, then bookmark it directly into your folders.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2 border-t border-slate-800/50 pt-4">
+                <h3 className="font-bold text-base text-blue-300 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                  Prompt Library Features
+                </h3>
+                <p className="text-slate-300">
+                  Switch to the <strong className="text-white">Library</strong> view to access pre-curated <strong>Starter Packs</strong> or organize your custom prompts:
+                </p>
+                <ul className="list-disc pl-5 space-y-1 text-xs text-slate-400">
+                  <li>Create custom folders and tag prompts for easy categorization.</li>
+                  <li>Use <strong className="text-slate-300">Load Into Dashboard</strong> to immediately auto-fill prompts containing template variables (e.g. <code className="text-blue-400 bg-slate-950 px-1.5 py-0.5 rounded font-mono">{"{{topic}}"}</code>).</li>
+                  <li>Export backups as JSON or generate print-friendly PDF catalog documents.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="bg-slate-800/50 p-6 border-t border-slate-700 flex justify-end">
+              <button 
+                onClick={() => setIsHelpModalOpen(false)}
+                className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md active:scale-95"
+              >
+                Got It
+              </button>
             </div>
           </div>
         </div>
