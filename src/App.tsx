@@ -2305,7 +2305,7 @@ Optimization Summary: ${optimizationSummary}
                 <div className="p-8 space-y-6 animate-in slide-in-from-top-4 fade-in duration-500">
                   {(() => {
                     const starterCategories = [...new Set(STARTER_PACKS.map(p => p.folder))].sort();
-                 return starterCategories.map(category => {
+return starterCategories.map(category => {
                    const categoryPrompts = STARTER_PACKS.filter(p => p.folder === category);
                    const isOpen = openFolders[`starter-${category}`];
 
@@ -2313,12 +2313,14 @@ Optimization Summary: ${optimizationSummary}
                      <div key={`starter-${category}`} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
                        <div 
                          onClick={() => setOpenFolders(prev => ({ ...prev, [`starter-${category}`]: !isOpen }))}
-                         className={`bg-slate-800/40 px-4 py-4 sm:px-6 sm:py-5 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center cursor-pointer hover:bg-slate-800/60 transition-colors ${isOpen ? 'border-b border-slate-800/50' : ''}`}
+                         className={`bg-slate-800/30 px-4 py-4 sm:px-6 sm:py-5 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center cursor-pointer hover:bg-slate-800/50 transition-colors ${isOpen ? 'border-b border-slate-800/50' : ''}`}
                        >
-                         <div className="flex items-center gap-3 w-full md:w-auto">
-                           <Folder size={18} className="text-blue-500/70 shrink-0" />
-                           <h3 className="text-base sm:text-lg font-bold text-slate-300 truncate">{category}</h3>
-                           <span className="text-[9px] sm:text-[10px] font-black bg-slate-800 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wider shrink-0">Starter</span>
+                         <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full md:w-auto">
+                           <div className="flex items-center gap-3">
+                             <Folder size={20} className="text-blue-500/70 shrink-0" />
+                             <h3 className="text-base sm:text-lg font-bold text-slate-300 truncate">{category}</h3>
+                             <span className="text-[9px] sm:text-[10px] font-black bg-slate-800 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wider shrink-0">Starter</span>
+                           </div>
                          </div>
                          <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto pt-3 md:pt-0 border-t border-slate-800/40 md:border-none">
                            {categoryPrompts.length > 0 && (
@@ -2337,7 +2339,7 @@ Optimization Summary: ${optimizationSummary}
                        </div>
 
                        {isOpen && (
-                         <div className="p-6 bg-slate-900/20 border-t border-slate-800/50 animate-in slide-in-from-top-2 duration-200">
+                         <div className="p-4 sm:p-8 bg-slate-950/20 space-y-6 border-t border-slate-800/50 animate-in slide-in-from-top-2 duration-300">
                            <div className="grid grid-cols-1 gap-6">
                              {categoryPrompts.map(pack => {
                                const isAdded = savedPrompts.some(p => p.id === pack.id);
