@@ -361,12 +361,6 @@ const App = () => {
       return;
     }
     
-    // Dev Mode bypass
-    if (accessToken === 'dev-bypass') {
-      setTimeRemaining('Dev Mode (No Limit)');
-      return;
-    }
-
     const checkExpiry = () => {
       try {
         const parts = accessToken.split('-');
@@ -409,11 +403,6 @@ const App = () => {
     }
 
     const code = passcodeInput.trim();
-    if (code === 'dev-bypass') {
-      localStorage.setItem('access_token', code);
-      setAccessToken(code);
-      return;
-    }
 
     try {
       const parts = code.split('-');
@@ -1881,20 +1870,6 @@ Optimization Summary: ${optimizationSummary}
               </button>
             </div>
 
-            {(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && (
-              <div className="mt-8 pt-6 border-t border-slate-800/60 text-center">
-                <button 
-                  onClick={() => {
-                    localStorage.setItem('access_token', 'dev-bypass');
-                    setAccessToken('dev-bypass');
-                    setLoginError('');
-                  }}
-                  className="text-xs text-slate-500 hover:text-slate-300 transition-colors font-bold"
-                >
-                  ⚙️ Local Dev Bypass (Only works if Server Auth is disabled)
-                </button>
-              </div>
-            )}
           </div>
         </div>
         {renderHelpModal()}

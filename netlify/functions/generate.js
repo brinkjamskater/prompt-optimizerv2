@@ -33,30 +33,37 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // 2. Enforce Access Secret verification (If configured on Netlify)
+  // 2. Enforce Access Secret verification
   const accessSecret = process.env.ACCESS_SECRET;
   const masterKey = process.env.MASTER_KEY;
-  if (accessSecret) {
-    const authHeader = event.headers.authorization || event.headers.Authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return {
-        statusCode: 401,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Unauthorized: Missing or invalid access token' })
-      };
-    }
+  if (!accessSecret) {
+    console.error('[SECURITY ERROR] ACCESS_SECRET is not configured on Netlify environment variables.');
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Internal Server Error (Authentication misconfigured)' })
+    };
+  }
 
-    const token = authHeader.split(' ')[1];
-    const isValidToken = verifyToken(token, accessSecret);
-    const isMasterKey = masterKey && token === masterKey;
+  const authHeader = event.headers.authorization || event.headers.Authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return {
+      statusCode: 401,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Unauthorized: Missing or invalid access token' })
+    };
+  }
 
-    if (!isValidToken && !isMasterKey) {
-      return {
-        statusCode: 401,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Unauthorized: Access code expired or invalid' })
-      };
-    }
+  const token = authHeader.split(' ')[1];
+  const isValidToken = verifyToken(token, accessSecret);
+  const isMasterKey = masterKey && token === masterKey;
+
+  if (!isValidToken && !isMasterKey) {
+    return {
+      statusCode: 401,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Unauthorized: Access code expired or invalid' })
+    };
   }
 
   // 3. Validate API Key injection at runtime (Security+ constraint)

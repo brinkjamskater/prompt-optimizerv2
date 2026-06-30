@@ -33,12 +33,12 @@ exports.handler = async (event, context) => {
   const accessSecret = process.env.ACCESS_SECRET;
   const masterKey = process.env.MASTER_KEY;
   
-  // If authentication is not set up on the server, we allow verify to pass (for local dev convenience)
   if (!accessSecret) {
+    console.error('[SECURITY ERROR] ACCESS_SECRET is not configured on Netlify environment variables.');
     return { 
-      statusCode: 200, 
+      statusCode: 500, 
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ valid: true, message: 'Local development bypass: No Auth configured on server' }) 
+      body: JSON.stringify({ error: 'Internal Server Error (Authentication misconfigured)' }) 
     };
   }
 
