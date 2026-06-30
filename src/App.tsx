@@ -1794,32 +1794,42 @@ Optimization Summary: ${optimizationSummary}
     <div className="min-h-screen bg-[#0b1120] font-sans text-slate-200 pb-20">
       
       {/* Top Navigation */}
-      <div className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-center">
-          <div className="flex flex-wrap gap-2 sm:gap-4 justify-center w-full sm:w-auto">
-            <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
-              <Target size={16} /> Dashboard
-            </button>
-            <button onClick={() => setCurrentView('library')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'library' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
-              <BookOpen size={16} /> Library
-            </button>
-            {(!accessToken || !accessToken.startsWith('emp-')) && (
-              <button onClick={() => setCurrentView('admin')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'admin' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
-                <Lock size={16} /> Console
-              </button>
-            )}
-          </div>
+      <div className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 py-3.5 sm:py-4">
+        <div className="max-w-5xl mx-auto px-4 md:px-8 flex flex-col items-center gap-3 sm:gap-4">
+          {/* Main App Title */}
+          <h1 className="text-white text-xl sm:text-2xl font-black tracking-tight text-center">
+            {currentView === 'dashboard' && "Prompt Optimizer"}
+            {currentView === 'library' && "Prompt Library"}
+            {currentView === 'admin' && "Console"}
+          </h1>
 
-          <div className="flex justify-between sm:justify-end items-center gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t border-slate-800/60 sm:border-none">
-            {timeRemaining && (
-              <span className="text-[10px] sm:text-xs bg-slate-950 border border-slate-800 text-slate-300 font-black px-3 py-1.5 sm:py-2 rounded-full tracking-wider flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                {timeRemaining}
-              </span>
-            )}
-            <button onClick={() => handleLogout()} className="text-[10px] sm:text-xs text-slate-400 hover:text-red-400 hover:bg-red-500/10 font-bold px-3 py-1.5 sm:py-2 rounded-md border border-slate-800 hover:border-red-500/20 transition-all">
-              Log Out
-            </button>
+          {/* Navigation Controls Row */}
+          <div className="flex flex-col sm:flex-row gap-3 w-full justify-between items-center border-t border-slate-800/50 pt-3">
+            <div className="flex flex-wrap gap-2 justify-center w-full sm:w-auto">
+              <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+                <Target size={16} /> Dashboard
+              </button>
+              <button onClick={() => setCurrentView('library')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'library' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+                <BookOpen size={16} /> Library
+              </button>
+              {(!accessToken || !accessToken.startsWith('emp-')) && (
+                <button onClick={() => setCurrentView('admin')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'admin' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+                  <Lock size={16} /> Console
+                </button>
+              )}
+            </div>
+
+            <div className="flex justify-between sm:justify-end items-center gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t border-slate-800/60 sm:border-none">
+              {timeRemaining && (
+                <span className="text-[10px] sm:text-xs bg-slate-950 border border-slate-800 text-slate-300 font-black px-3 py-1.5 sm:py-2 rounded-full tracking-wider flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  {timeRemaining}
+                </span>
+              )}
+              <button onClick={() => handleLogout()} className="text-[10px] sm:text-xs text-slate-400 hover:text-red-400 hover:bg-red-500/10 font-bold px-3 py-1.5 sm:py-2 rounded-md border border-slate-800 hover:border-red-500/20 transition-all">
+                Log Out
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1829,8 +1839,6 @@ Optimization Summary: ${optimizationSummary}
         {/* --- DASHBOARD VIEW --- */}
         {currentView === 'dashboard' && (
           <>
-            <h1 className="text-white text-3xl sm:text-4xl font-black mb-8 tracking-tight text-center">Prompt Optimizer</h1>
-
             <div className="border-none sm:border border-slate-800 bg-transparent sm:bg-slate-900 rounded-none sm:rounded-2xl p-0 sm:p-6 md:p-8 space-y-6 mb-12 shadow-none sm:shadow-sm">
               <h2 className="text-2xl font-black text-slate-200 ml-2 mb-2 tracking-tight">Phase 1: Original Prompt Evaluation</h2>
 
@@ -2257,8 +2265,7 @@ Optimization Summary: ${optimizationSummary}
               </div>
             )}
 
-            <div className="flex flex-col items-center gap-6 mb-8">
-              <h1 className="text-3xl sm:text-4xl font-black text-white text-center">Prompt Library</h1>
+            <div className="flex flex-col items-center mb-8">
               <div className="flex flex-wrap justify-center gap-2 w-full">
                 <button onClick={handleCreateFolder} className="flex-1 sm:flex-initial bg-blue-600 hover:bg-blue-500 text-white px-3 py-2.5 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors shadow-lg shadow-blue-500/20">
                   <FolderPlus size={14} /> Add Folder
