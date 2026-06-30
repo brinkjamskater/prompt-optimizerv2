@@ -2339,66 +2339,64 @@ return starterCategories.map(category => {
                        </div>
 
                        {isOpen && (
-                         <div className="p-4 sm:p-8 bg-slate-950/20 space-y-6 border-t border-slate-800/50 animate-in slide-in-from-top-2 duration-300">
-                           <div className="grid grid-cols-1 gap-6">
-                             {categoryPrompts.map(pack => {
-                               const isAdded = savedPrompts.some(p => p.id === pack.id);
-                               return (
-                                 <div key={pack.id} className="bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-8 transition-all hover:border-slate-700 shadow-lg">
-                                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-between items-start mb-6 border-b border-slate-800/50 pb-6">
-                                     <div>
-                                       <h4 className="font-bold text-xl sm:text-2xl text-blue-300 mb-2 sm:mb-3 tracking-tight">{pack.title}</h4>
-                                       <div className="flex flex-wrap gap-2">
-                                         <span className="text-[10px] font-black bg-blue-900/30 text-blue-400 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg border border-blue-800/50 uppercase tracking-[0.15em]">Starter Template</span>
-                                         {pack.tags.map(t => <span key={t} className="text-[10px] font-bold bg-slate-800 text-slate-500 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg uppercase tracking-wider">{t}</span>)}
-                                       </div>
+                         <div className="divide-y divide-slate-800/60 bg-slate-950/10 animate-in slide-in-from-top-2 duration-300">
+                           {categoryPrompts.map(pack => {
+                             const isAdded = savedPrompts.some(p => p.id === pack.id);
+                             return (
+                               <div key={pack.id} className="p-4 sm:p-8 transition-all hover:bg-slate-900/10 relative group">
+                                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-between items-start mb-6 border-b border-slate-800/50 pb-6">
+                                   <div>
+                                     <h4 className="font-bold text-xl sm:text-2xl text-blue-300 mb-2 sm:mb-3 tracking-tight">{pack.title}</h4>
+                                     <div className="flex flex-wrap gap-2">
+                                       <span className="text-[10px] font-black bg-blue-900/30 text-blue-400 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg border border-blue-800/50 uppercase tracking-[0.15em]">Starter Template</span>
+                                       {pack.tags.map(t => <span key={t} className="text-[10px] font-bold bg-slate-800 text-slate-500 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg uppercase tracking-wider">{t}</span>)}
                                      </div>
-                                     {pack.difficulty && (
-                                       <div className="text-left sm:text-right w-full sm:w-auto pt-3 sm:pt-0 border-t border-slate-800/50 sm:border-none">
-                                          <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1.5 sm:mb-1">Level</div>
-                                          <span className={`text-[11px] font-black px-4 py-1.5 rounded-full border shadow-sm inline-block ${
-                                            pack.difficulty === 'Beginner' ? 'bg-emerald-900/20 text-emerald-400 border-emerald-800/30 shadow-emerald-900/10' : 
-                                            pack.difficulty === 'Intermediate' ? 'bg-yellow-900/30 text-yellow-400 border-yellow-800/30 shadow-yellow-900/10' : 
-                                            'bg-red-900/20 text-red-400 border-red-800/30 shadow-red-900/10'
-                                          }`}>
-                                            {pack.difficulty.toUpperCase()}
-                                          </span>
-                                        </div>
-                                      )}
                                    </div>
-                                      <p className="text-sm text-slate-400 mb-4">{pack.description}</p>
-                                      <div className="flex flex-wrap gap-2 mb-4">
-                                        {pack.tags.map(t => <span key={t} className="text-[10px] font-bold bg-slate-800 text-slate-400 px-2 py-0.5 rounded">{t}</span>)}
+                                   {pack.difficulty && (
+                                     <div className="text-left sm:text-right w-full sm:w-auto pt-3 sm:pt-0 border-t border-slate-800/50 sm:border-none">
+                                        <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1.5 sm:mb-1">Level</div>
+                                        <span className={`text-[11px] font-black px-4 py-1.5 rounded-full border shadow-sm inline-block ${
+                                          pack.difficulty === 'Beginner' ? 'bg-emerald-900/20 text-emerald-400 border-emerald-800/30 shadow-emerald-900/10' : 
+                                          pack.difficulty === 'Intermediate' ? 'bg-yellow-900/30 text-yellow-400 border-yellow-800/30 shadow-yellow-900/10' : 
+                                          'bg-red-900/20 text-red-400 border-red-800/30 shadow-red-900/10'
+                                        }`}>
+                                          {pack.difficulty.toUpperCase()}
+                                        </span>
                                       </div>
-                                      <div className="relative group">
-                                        <div className="text-xs text-slate-500 font-mono bg-slate-950 p-4 pr-10 rounded-lg border border-slate-800/50 max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 transition-all">
-                                          {pack.promptText}
-                                        </div>
-                                        <button 
-                                          onClick={(e) => { e.stopPropagation(); handleCopy(pack.id, pack.promptText); }}
-                                          className="absolute top-2 right-2 p-2 rounded bg-slate-800/90 border border-slate-800 text-slate-500 hover:text-white transition-all opacity-0 group-hover:opacity-100 shadow-md"
-                                        >
-                                          {copiedId === pack.id ? <Check size={14} className="text-emerald-400" /> : <Clipboard size={14} />}
-                                        </button>
-                                      </div>
-                                   <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-6 border-t border-slate-800/50 mt-6">
-                                      <button onClick={() => loadIntoDashboard(pack.promptText)} className="w-full sm:w-auto justify-center bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-colors active:scale-95 shadow-md">
-                                        <Play size={16} /> Load Dashboard
-                                      </button>
-                                      <button 
-                                        disabled={isAdded}
-                                        onClick={() => saveLibraryToLocal([...savedPrompts, pack])} 
-                                        className={`w-full sm:w-auto justify-center px-4 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-colors active:scale-95 ${isAdded ? 'bg-emerald-900/30 text-emerald-500 border border-emerald-800/30 cursor-not-allowed' : 'bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white'}`}
-                                      >
-                                        {isAdded ? <Check size={16} /> : <BookmarkPlus size={16} />} {isAdded ? 'Added to Library' : 'Add to My Library'}
-                                      </button>
-                                   </div>
+                                    )}
                                  </div>
-                               );
-                             })}
-                           </div>
-                         </div>
-                       )}
+                                    <p className="text-sm text-slate-400 mb-4">{pack.description}</p>
+                                    <div className="flex flex-wrap gap-2 mb-4">
+                                      {pack.tags.map(t => <span key={t} className="text-[10px] font-bold bg-slate-800 text-slate-400 px-2 py-0.5 rounded">{t}</span>)}
+                                    </div>
+                                    <div className="relative group">
+                                      <div className="text-xs text-slate-400 font-mono whitespace-pre-wrap break-words bg-slate-950 p-4 pr-10 rounded-lg border border-slate-800/50 transition-all leading-relaxed">
+                                        {pack.promptText}
+                                      </div>
+                                       <button 
+                                         onClick={(e) => { e.stopPropagation(); handleCopy(pack.id, pack.promptText); }}
+                                         className="absolute top-2 right-2 p-2 rounded bg-slate-800/90 border border-slate-800 text-slate-500 hover:text-white transition-all opacity-0 group-hover:opacity-100 shadow-md"
+                                       >
+                                         {copiedId === pack.id ? <Check size={14} className="text-emerald-400" /> : <Clipboard size={14} />}
+                                       </button>
+                                     </div>
+                                  <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-6 border-t border-slate-800/50 mt-6">
+                                     <button onClick={() => loadIntoDashboard(pack.promptText)} className="w-full sm:w-auto justify-center bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-colors active:scale-95 shadow-md">
+                                       <Play size={16} /> Load Dashboard
+                                     </button>
+                                     <button 
+                                       disabled={isAdded}
+                                       onClick={() => saveLibraryToLocal([...savedPrompts, pack])} 
+                                       className={`w-full sm:w-auto justify-center px-4 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-colors active:scale-95 ${isAdded ? 'bg-emerald-900/30 text-emerald-500 border border-emerald-800/30 cursor-not-allowed' : 'bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white'}`}
+                                     >
+                                       {isAdded ? <Check size={16} /> : <BookmarkPlus size={16} />} {isAdded ? 'Added to Library' : 'Add to My Library'}
+                                     </button>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
                      </div>
                    );
                  });
@@ -2526,12 +2524,12 @@ return starterCategories.map(category => {
                             </div>
 
                             {isOpen && (
-                              <div className="p-8 bg-slate-950/20 space-y-8 animate-in slide-in-from-top-2 duration-300">
+                              <div className="divide-y divide-slate-800/60 bg-slate-950/10 animate-in slide-in-from-top-2 duration-300">
                                 {folderPrompts.length === 0 ? (
-                                  <p className="text-slate-600 text-sm italic py-10 text-center bg-slate-950/30 rounded-2xl border border-dashed border-slate-800/50">This folder is empty.</p>
+                                  <p className="text-slate-600 text-sm italic py-10 text-center bg-transparent">This folder is empty.</p>
                                 ) : (
                                   folderPrompts.map(prompt => (
-                                    <div key={prompt.id} className={`bg-slate-950 border rounded-2xl p-4 sm:p-8 transition-all duration-300 ${selectedPromptIds.includes(prompt.id) ? 'border-blue-500 ring-2 ring-blue-500/20 shadow-[0_0_30px_rgba(59,130,246,0.15)]' : 'border-slate-800 hover:border-slate-700'}`}>
+                                    <div key={prompt.id} className={`p-4 sm:p-8 transition-all duration-300 bg-transparent ${selectedPromptIds.includes(prompt.id) ? 'bg-blue-900/10 shadow-[inset_0_0_20px_rgba(59,130,246,0.05)] border-l-4 border-blue-500 pl-3 sm:pl-7' : ''} hover:bg-slate-900/10 relative group`}>
                                       <div className="flex flex-col md:flex-row justify-between items-start mb-6 md:mb-8 border-b border-slate-800/50 pb-6 gap-4 md:gap-6">
                                         <div className="flex gap-4 sm:gap-6 w-full md:w-auto">
                                           <div className="pt-1.5 shrink-0">
@@ -2567,7 +2565,7 @@ return starterCategories.map(category => {
                                       </div>
 
                                       <div className="relative group mb-8">
-                                        <div className="text-sm text-slate-300 font-mono whitespace-pre-wrap bg-slate-900/80 p-6 pr-14 rounded-2xl border border-slate-800/50 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 transition-all group-hover:border-slate-700 shadow-inner leading-relaxed">
+                                        <div className="text-sm text-slate-300 font-mono whitespace-pre-wrap break-words bg-slate-900/80 p-6 pr-14 rounded-2xl border border-slate-800/50 transition-all group-hover:border-slate-700 shadow-inner leading-relaxed">
                                           {prompt.promptText}
                                         </div>
                                         <button 
@@ -2576,7 +2574,6 @@ return starterCategories.map(category => {
                                         >
                                           {copiedId === prompt.id ? <Check size={20} className="text-emerald-400" /> : <Clipboard size={20} />}
                                         </button>
-                                        <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-slate-900/40 to-transparent pointer-events-none rounded-r-2xl"></div>
                                       </div>
                                       
                                       {prompt.notes && (
