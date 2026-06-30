@@ -1795,29 +1795,29 @@ Optimization Summary: ${optimizationSummary}
       
       {/* Top Navigation */}
       <div className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 py-3 flex justify-between items-center">
-          <div className="flex gap-4">
-            <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-2 font-bold px-4 py-2 rounded-md transition-colors ${currentView === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
-              <Target size={18} /> Dashboard
+        <div className="max-w-5xl mx-auto px-4 md:px-8 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between items-center">
+          <div className="flex flex-wrap gap-2 sm:gap-4 justify-center w-full sm:w-auto">
+            <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+              <Target size={16} /> Dashboard
             </button>
-            <button onClick={() => setCurrentView('library')} className={`flex items-center gap-2 font-bold px-4 py-2 rounded-md transition-colors ${currentView === 'library' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
-              <BookOpen size={18} /> Prompt Library
+            <button onClick={() => setCurrentView('library')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'library' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+              <BookOpen size={16} /> Library
             </button>
             {(!accessToken || !accessToken.startsWith('emp-')) && (
-              <button onClick={() => setCurrentView('admin')} className={`flex items-center gap-2 font-bold px-4 py-2 rounded-md transition-colors ${currentView === 'admin' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
-                <Lock size={18} /> Owner Console
+              <button onClick={() => setCurrentView('admin')} className={`flex items-center gap-1.5 sm:gap-2 font-bold px-3 py-2 sm:px-4 rounded-md transition-colors text-xs sm:text-sm ${currentView === 'admin' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+                <Lock size={16} /> Console
               </button>
             )}
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex justify-between sm:justify-end items-center gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t border-slate-800/60 sm:border-none">
             {timeRemaining && (
-              <span className="text-xs bg-slate-950 border border-slate-800 text-slate-300 font-black px-4 py-2 rounded-full tracking-wider flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="text-[10px] sm:text-xs bg-slate-950 border border-slate-800 text-slate-300 font-black px-3 py-1.5 sm:py-2 rounded-full tracking-wider flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 {timeRemaining}
               </span>
             )}
-            <button onClick={() => handleLogout()} className="text-xs text-slate-400 hover:text-red-400 hover:bg-red-500/10 font-bold px-4 py-2 rounded-md border border-slate-800 hover:border-red-500/20 transition-all">
+            <button onClick={() => handleLogout()} className="text-[10px] sm:text-xs text-slate-400 hover:text-red-400 hover:bg-red-500/10 font-bold px-3 py-1.5 sm:py-2 rounded-md border border-slate-800 hover:border-red-500/20 transition-all">
               Log Out
             </button>
           </div>
