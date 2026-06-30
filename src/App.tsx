@@ -1824,17 +1824,17 @@ Optimization Summary: ${optimizationSummary}
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto p-4 md:p-8">
+      <div className="max-w-5xl mx-auto p-3 sm:p-6 md:p-8">
         
         {/* --- DASHBOARD VIEW --- */}
         {currentView === 'dashboard' && (
           <>
             <h1 className="text-white text-3xl font-black mb-8 tracking-tight">AI Prompt Optimizer</h1>
 
-            <div className="border border-slate-800 bg-slate-900 rounded-2xl p-4 md:p-8 space-y-6 mb-12 shadow-sm">
+            <div className="border-none sm:border border-slate-800 bg-transparent sm:bg-slate-900 rounded-none sm:rounded-2xl p-0 sm:p-6 md:p-8 space-y-6 mb-12 shadow-none sm:shadow-sm">
               <h2 className="text-2xl font-black text-slate-200 ml-2 mb-2 tracking-tight">Phase 1: Original Prompt Evaluation</h2>
 
-              <section className="bg-slate-800/50 p-6 rounded-xl shadow-sm border border-slate-700">
+              <section className="bg-slate-800/50 p-4 sm:p-6 rounded-xl shadow-sm border border-slate-700">
                 <h2 className="text-md font-bold mb-4 text-slate-200">1. Original Input & AI Response</h2>
                 <textarea className="w-full h-24 p-3 border border-slate-700 rounded-lg mb-4 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none text-sm bg-slate-950 text-slate-200 placeholder-slate-500" placeholder="Paste original prompt..." value={inputs.prompt} onChange={(e) => setInputs({ ...inputs, prompt: e.target.value })} />
                 <label className="block text-sm font-bold mb-2 text-slate-200">Original AI Output</label>
@@ -1844,7 +1844,7 @@ Optimization Summary: ${optimizationSummary}
                 </button>
               </section>
 
-              <section className="bg-slate-800/50 p-6 rounded-xl shadow-sm border border-slate-700">
+              <section className="bg-slate-800/50 p-4 sm:p-6 rounded-xl shadow-sm border border-slate-700">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-md font-bold text-slate-200">2. Original QA Scorecard</h2>
                   <div className="flex items-center gap-3">
@@ -1881,7 +1881,7 @@ Optimization Summary: ${optimizationSummary}
                 </div>
               </section>
 
-              <section className="bg-slate-950 text-slate-200 p-8 rounded-xl shadow-lg border border-slate-800 relative overflow-hidden">
+              <section className="bg-slate-950 text-slate-200 p-4 sm:p-8 rounded-xl shadow-lg border border-slate-800 relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-4 opacity-10"><Target size={120} /></div>
                 <h2 className="font-bold text-lg mb-6 flex items-center gap-2 border-b border-slate-800 pb-4 relative z-10">4. Original Final Evaluation</h2>
                 
@@ -1918,10 +1918,10 @@ Optimization Summary: ${optimizationSummary}
             </div>
 
 
-            <div className="border border-slate-800 bg-slate-900 rounded-2xl p-4 md:p-8 space-y-6 shadow-sm">
+            <div className="border-none sm:border border-slate-800 bg-transparent sm:bg-slate-900 rounded-none sm:rounded-2xl p-0 sm:p-6 md:p-8 space-y-6 shadow-none sm:shadow-sm mb-12">
               <h2 className="text-2xl font-black text-slate-200 ml-2 mb-2 tracking-tight">Phase 2: Prompt Optimization & Retest</h2>
 
-              <section className="bg-slate-800/50 p-6 rounded-xl shadow-sm border border-slate-700">
+              <section className="bg-slate-800/50 p-4 sm:p-6 rounded-xl shadow-sm border border-slate-700">
                 <h2 className="text-md font-bold text-slate-200 mb-6 flex items-center gap-2"><Lightbulb size={20} className="text-blue-400" /> 5. Prompt Optimization Builder</h2>
                 
                 <div className="bg-slate-900 p-5 rounded-lg mb-6 border border-slate-700">
@@ -2114,13 +2114,13 @@ Optimization Summary: ${optimizationSummary}
                 </div>
               </section>
 
-              <section className="bg-slate-800/50 p-6 rounded-xl shadow-sm border border-slate-700">
+              <section className="bg-slate-800/50 p-4 sm:p-6 rounded-xl shadow-sm border border-slate-700">
                 <h2 className="text-md font-bold text-slate-200 mb-4">6. Optimized Prompt Test</h2>
                 <label className="block text-sm font-bold mb-2 text-slate-200">Optimized AI Output</label>
                 <textarea className="w-full h-40 p-4 border border-slate-700 rounded-lg outline-none text-sm resize-none bg-slate-950 text-slate-200 placeholder-slate-500" placeholder="Output will appear here after optimization..." value={optimizedOutput} readOnly />
               </section>
 
-              <section className="bg-slate-800/50 p-6 rounded-xl shadow-sm border border-slate-700">
+              <section className="bg-slate-800/50 p-4 sm:p-6 rounded-xl shadow-sm border border-slate-700">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-md font-bold text-slate-200">7. Optimized QA Scorecard</h2>
                   <div className="flex items-center gap-3">
@@ -2135,7 +2135,7 @@ Optimization Summary: ${optimizationSummary}
               </section>
 
               {isOriginalScored && (
-                <section className="bg-slate-950 text-slate-200 p-8 rounded-xl shadow-lg border border-slate-800">
+                <section className="bg-slate-950 text-slate-200 p-4 sm:p-8 rounded-xl shadow-lg border border-slate-800">
                   <h2 className="font-bold text-lg mb-8 flex items-center gap-2 border-b border-slate-800 pb-4"><Target size={20} className="text-blue-400" /> 8. Before / After Comparison</h2>
                     
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -2257,23 +2257,23 @@ Optimization Summary: ${optimizationSummary}
               </div>
             )}
 
-            <div className="flex flex-wrap gap-4 items-center justify-between">
-              <h1 className="text-3xl font-black text-white">Local Prompt Library</h1>
-              <div className="flex flex-wrap gap-3">
-                <button onClick={handleCreateFolder} className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors shadow-lg shadow-blue-500/20">
-                  <FolderPlus size={16} /> Create Folder
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+              <h1 className="text-2xl sm:text-3xl font-black text-white">Local Prompt Library</h1>
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                <button onClick={handleCreateFolder} className="flex-1 sm:flex-initial bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors shadow-lg shadow-blue-500/20">
+                  <FolderPlus size={14} /> Add Folder
                 </button>
-                <button onClick={handleExportJSON} className="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors">
-                  <Download size={16} /> Export Backup JSON
+                <button onClick={handleExportJSON} className="flex-1 sm:flex-initial bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
+                  <Download size={14} /> Export Backup
                 </button>
-                <div className="relative">
-                  <button onClick={() => fileInputRef.current?.click()} className="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors">
-                    <Upload size={16} /> Import Backup JSON
+                <div className="flex-1 sm:flex-initial relative">
+                  <button onClick={() => fileInputRef.current?.click()} className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
+                    <Upload size={14} /> Import Backup
                   </button>
                   <input type="file" accept=".json" ref={fileInputRef} onChange={handleImportJSON} className="hidden" />
                 </div>
-                <button onClick={() => handleExportPDF()} className="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors">
-                  <FileDown size={16} /> Export PDF Copy
+                <button onClick={() => handleExportPDF()} className="flex-1 sm:flex-initial bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
+                  <FileDown size={14} /> Export PDF
                 </button>
               </div>
             </div>
@@ -2282,21 +2282,21 @@ Optimization Summary: ${optimizationSummary}
             <div className="border border-slate-800 rounded-3xl overflow-hidden shadow-2xl bg-slate-900/40 mb-8">
               <div 
                 onClick={toggleStarterSection}
-                className={`px-8 py-7 flex justify-between items-center cursor-pointer transition-all ${isStarterSectionOpen ? 'bg-slate-800/80' : 'bg-slate-900/60 hover:bg-slate-800/50'}`}
+                className={`px-4 py-4 sm:px-8 sm:py-7 flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center cursor-pointer transition-all ${isStarterSectionOpen ? 'bg-slate-800/80' : 'bg-slate-900/60 hover:bg-slate-800/50'}`}
               >
-                <div className="flex items-center gap-5">
-                  <div className={`p-4 rounded-2xl border transition-all duration-500 ${isStarterSectionOpen ? 'bg-blue-600 text-white border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.3)]' : 'bg-blue-600/10 text-blue-400 border-blue-500/20'}`}>
-                    <Sparkles size={28} />
+                <div className="flex items-center gap-3 sm:gap-5">
+                  <div className={`p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-500 ${isStarterSectionOpen ? 'bg-blue-600 text-white border-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.3)]' : 'bg-blue-600/10 text-blue-400 border-blue-500/20'}`}>
+                    <Sparkles size={24} className="sm:w-7 sm:h-7" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-black text-white tracking-tight">Starter Prompt Packs</h2>
-                    <p className="text-xs text-slate-400 font-bold uppercase tracking-[0.2em] mt-1.5 opacity-70">Curated examples and templates</p>
+                    <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">Starter Prompt Packs</h2>
+                    <p className="text-[10px] sm:text-xs text-slate-400 font-bold uppercase tracking-[0.2em] mt-1 opacity-70">Curated examples and templates</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-8">
-                  <span className="text-xs font-black text-slate-500 bg-slate-950/50 px-5 py-2 rounded-full border border-slate-800 tracking-widest">{STARTER_PACKS.length} Prompts</span>
+                <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-8 w-full sm:w-auto pt-3 sm:pt-0 border-t border-slate-800/40 sm:border-none">
+                  <span className="text-[10px] sm:text-xs font-black text-slate-500 bg-slate-950/50 px-3 py-1.5 sm:px-5 sm:py-2 rounded-full border border-slate-800 tracking-widest">{STARTER_PACKS.length} Prompts</span>
                   <div className={`transition-transform duration-300 ${isStarterSectionOpen ? 'rotate-180' : 'rotate-0'}`}>
-                    <ChevronDown size={32} className={isStarterSectionOpen ? "text-blue-400" : "text-slate-600"} />
+                    <ChevronDown size={24} className={isStarterSectionOpen ? "text-blue-400" : "text-slate-600"} />
                   </div>
                 </div>
               </div>
@@ -2313,24 +2313,26 @@ Optimization Summary: ${optimizationSummary}
                      <div key={`starter-${category}`} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
                        <div 
                          onClick={() => setOpenFolders(prev => ({ ...prev, [`starter-${category}`]: !isOpen }))}
-                         className="bg-slate-800/40 px-6 py-4 flex justify-between items-center cursor-pointer hover:bg-slate-800/60 transition-colors"
+                         className={`bg-slate-800/40 px-4 py-4 sm:px-6 sm:py-5 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center cursor-pointer hover:bg-slate-800/60 transition-colors ${isOpen ? 'border-b border-slate-800/50' : ''}`}
                        >
-                         <div className="flex items-center gap-3">
-                           <Folder size={18} className="text-blue-500/70" />
-                           <h3 className="text-lg font-bold text-slate-300">{category}</h3>
-                           <span className="text-[10px] font-black bg-slate-800 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wider">Starter</span>
+                         <div className="flex items-center gap-3 w-full md:w-auto">
+                           <Folder size={18} className="text-blue-500/70 shrink-0" />
+                           <h3 className="text-base sm:text-lg font-bold text-slate-300 truncate">{category}</h3>
+                           <span className="text-[9px] sm:text-[10px] font-black bg-slate-800 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wider shrink-0">Starter</span>
                          </div>
-                         <div className="flex items-center gap-4">
-                           <button 
-                             onClick={(e) => { e.stopPropagation(); handleExportPDF(category, STARTER_PACKS); }}
-                             className="flex items-center gap-1.5 text-slate-500 hover:text-blue-400 transition-colors px-2 py-1 rounded-md bg-slate-950/50 border border-slate-800 hover:border-blue-500/30 group"
-                             title="Export this starter collection to PDF"
-                           >
-                             <FileDown size={12} className="group-hover:scale-110 transition-transform" />
-                             <span className="text-[10px] font-black uppercase tracking-widest">Export PDF</span>
-                           </button>
-                           <span className="text-xs font-bold text-slate-500 bg-slate-900/50 px-3 py-1 rounded-full">{categoryPrompts.length} Prompts</span>
-                           {isOpen ? <ChevronUp size={18} className="text-slate-500" /> : <ChevronDown size={18} className="text-slate-500" />}
+                         <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto pt-3 md:pt-0 border-t border-slate-800/40 md:border-none">
+                           {categoryPrompts.length > 0 && (
+                             <button 
+                               onClick={(e) => { e.stopPropagation(); handleExportPDF(category, STARTER_PACKS); }}
+                               className="flex items-center gap-1.5 text-slate-500 hover:text-orange-400 transition-colors px-2 py-1 rounded-md bg-slate-950/40 border border-slate-800 hover:border-orange-500/30 group"
+                               title="Export this starter collection to PDF"
+                             >
+                               <FileDown size={10} className="group-hover:scale-110 transition-transform" />
+                               <span className="text-[9px] font-black uppercase tracking-widest">Export PDF</span>
+                             </button>
+                           )}
+                           <span className="text-xs font-bold text-slate-500 tracking-wider shrink-0">{categoryPrompts.length} Prompts</span>
+                           {isOpen ? <ChevronUp size={16} className="text-slate-500 shrink-0" /> : <ChevronDown size={16} className="text-slate-500 shrink-0" />}
                          </div>
                        </div>
 
@@ -2340,19 +2342,19 @@ Optimization Summary: ${optimizationSummary}
                              {categoryPrompts.map(pack => {
                                const isAdded = savedPrompts.some(p => p.id === pack.id);
                                return (
-                                 <div key={pack.id} className="bg-slate-950 border border-slate-800 rounded-2xl p-8 transition-all hover:border-slate-700 shadow-lg">
-                                   <div className="flex justify-between items-start mb-8 border-b border-slate-800/50 pb-6">
+                                 <div key={pack.id} className="bg-slate-950 border border-slate-800 rounded-2xl p-4 sm:p-8 transition-all hover:border-slate-700 shadow-lg">
+                                   <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-between items-start mb-6 border-b border-slate-800/50 pb-6">
                                      <div>
-                                       <h4 className="font-bold text-2xl text-blue-300 mb-3 tracking-tight">{pack.title}</h4>
+                                       <h4 className="font-bold text-xl sm:text-2xl text-blue-300 mb-2 sm:mb-3 tracking-tight">{pack.title}</h4>
                                        <div className="flex flex-wrap gap-2">
-                                         <span className="text-[10px] font-black bg-blue-900/30 text-blue-400 px-3 py-1 rounded-lg border border-blue-800/50 uppercase tracking-[0.15em]">Starter Template</span>
-                                         {pack.tags.map(t => <span key={t} className="text-[10px] font-bold bg-slate-800 text-slate-500 px-3 py-1 rounded-lg uppercase tracking-wider">{t}</span>)}
+                                         <span className="text-[10px] font-black bg-blue-900/30 text-blue-400 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg border border-blue-800/50 uppercase tracking-[0.15em]">Starter Template</span>
+                                         {pack.tags.map(t => <span key={t} className="text-[10px] font-bold bg-slate-800 text-slate-500 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg uppercase tracking-wider">{t}</span>)}
                                        </div>
                                      </div>
                                      {pack.difficulty && (
-                                       <div className="text-right">
-                                          <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1.5">Level</div>
-                                          <span className={`text-[11px] font-black px-4 py-1.5 rounded-full border shadow-sm ${
+                                       <div className="text-left sm:text-right w-full sm:w-auto pt-3 sm:pt-0 border-t border-slate-800/50 sm:border-none">
+                                          <div className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-1.5 sm:mb-1">Level</div>
+                                          <span className={`text-[11px] font-black px-4 py-1.5 rounded-full border shadow-sm inline-block ${
                                             pack.difficulty === 'Beginner' ? 'bg-emerald-900/20 text-emerald-400 border-emerald-800/30 shadow-emerald-900/10' : 
                                             pack.difficulty === 'Intermediate' ? 'bg-yellow-900/30 text-yellow-400 border-yellow-800/30 shadow-yellow-900/10' : 
                                             'bg-red-900/20 text-red-400 border-red-800/30 shadow-red-900/10'
@@ -2377,14 +2379,14 @@ Optimization Summary: ${optimizationSummary}
                                           {copiedId === pack.id ? <Check size={14} className="text-emerald-400" /> : <Clipboard size={14} />}
                                         </button>
                                       </div>
-                                   <div className="flex gap-3 pt-4 border-t border-slate-800/50">
-                                      <button onClick={() => loadIntoDashboard(pack.promptText)} className="flex-1 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-colors">
+                                   <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 pt-6 border-t border-slate-800/50 mt-6">
+                                      <button onClick={() => loadIntoDashboard(pack.promptText)} className="w-full sm:w-auto justify-center bg-blue-600 hover:bg-blue-500 text-white px-4 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-colors active:scale-95 shadow-md">
                                         <Play size={16} /> Load Dashboard
                                       </button>
                                       <button 
                                         disabled={isAdded}
                                         onClick={() => saveLibraryToLocal([...savedPrompts, pack])} 
-                                        className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition-colors ${isAdded ? 'bg-emerald-900/30 text-emerald-500 border border-emerald-800/30 cursor-not-allowed' : 'bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white'}`}
+                                        className={`w-full sm:w-auto justify-center px-4 py-3 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2 transition-colors active:scale-95 ${isAdded ? 'bg-emerald-900/30 text-emerald-500 border border-emerald-800/30 cursor-not-allowed' : 'bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white'}`}
                                       >
                                         {isAdded ? <Check size={16} /> : <BookmarkPlus size={16} />} {isAdded ? 'Added to Library' : 'Add to My Library'}
                                       </button>
