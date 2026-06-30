@@ -65,6 +65,35 @@ app.post('/api/admin', (req, res) => {
   }
 });
 
+// 1.5 Verify Access Token Route (Local Dev mirror)
+app.post('/api/verify', (req, res) => {
+  const accessSecret = process.env.ACCESS_SECRET;
+  const masterKey = process.env.MASTER_KEY;
+
+  if (!accessSecret) {
+    return res.json({ valid: true, message: 'Local development bypass: No Auth configured' });
+  }
+
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Missing or invalid token' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  const isValidToken = verifyToken(token, accessSecret);
+  const isMasterKey = masterKey && token === masterKey;
+
+  if (isValidToken || isMasterKey) {
+    res.json({ 
+      valid: true, 
+      role: isMasterKey ? 'admin' : 'emp',
+      expiresAt: isValidToken ? parseInt(token.split('-')[1]) : null
+    });
+  } else {
+    res.status(401).json({ error: 'Invalid or expired passcode' });
+  }
+});
+
 // 2. Main Generation Route with Auth check
 app.post('/api/generate', async (req, res) => {
   const accessSecret = process.env.ACCESS_SECRET;

@@ -398,8 +398,10 @@ const App = () => {
     return () => clearInterval(interval);
   }, [accessToken]);
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setLoginError('');
+
     if (!passcodeInput.trim()) {
       setLoginError('Passcode cannot be empty.');
       return;
@@ -409,7 +411,6 @@ const App = () => {
     if (code === 'dev-bypass') {
       localStorage.setItem('access_token', code);
       setAccessToken(code);
-      setLoginError('');
       return;
     }
 
@@ -421,19 +422,27 @@ const App = () => {
           setLoginError('This passcode has expired.');
           return;
         }
-
-        localStorage.setItem('access_token', code);
-        setAccessToken(code);
-        setLoginError('');
-        return;
       }
     } catch (err) {}
 
-    // Allow it to be saved as the Master Key.
-    // The serverless function will reject it upon the first API call if it is invalid.
-    localStorage.setItem('access_token', code);
-    setAccessToken(code);
-    setLoginError('');
+    try {
+      const response = await fetch('/api/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${code}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid or expired passcode. Please try again.');
+      }
+
+      localStorage.setItem('access_token', code);
+      setAccessToken(code);
+    } catch(err) {
+      setLoginError(err.message || 'Passcode verification failed.');
+    }
   };
 
   const handleGenerateCode = async (e) => {
