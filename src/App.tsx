@@ -1706,7 +1706,7 @@ Optimization Summary: ${optimizationSummary}
     <div className="grid md:grid-cols-2 gap-4 mb-6">
       {criteria.map((c) => (
         <div key={`${prefix}-${c.id}`} className={`border p-4 rounded-lg transition-colors ${isLocked ? 'bg-slate-900 border-slate-800' : 'bg-slate-900 border-slate-600 shadow-sm'}`}>
-          <div className="flex justify-between items-center mb-3">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
             <span className={`font-bold text-sm ${isLocked ? 'text-slate-400' : 'text-slate-200'}`}>{c.label}</span>
             <div className="flex gap-3 text-sm text-slate-400">
               {[0, 1, 2].map((num) => (
@@ -1891,7 +1891,7 @@ Optimization Summary: ${optimizationSummary}
                     <div className="flex items-baseline gap-2 mb-2"><span className={`text-5xl font-black ${getOutputTextClasses(totalScore, scores)}`}>{totalScore}</span><span className="text-xl text-slate-500 font-bold">/12</span></div>
                     <div className={`px-3 py-1 rounded inline-block border font-bold text-sm ${getOutputBadgeClasses(totalScore, scores)}`}>{getRatingLabel(totalScore, scores)}</div>
                   </div>
-                  <div className="border-l border-slate-800 pl-8">
+                  <div className="border-t border-slate-800 pt-6 mt-6 md:border-t-0 md:border-l md:pt-0 md:mt-0 md:pl-8">
                     <div className="text-xs font-bold text-slate-400 tracking-wider mb-2">PROMPT QUALITY SCORE</div>
                     <div className="flex items-baseline gap-2 mb-2"><span className={`text-5xl font-black ${getPromptTextClasses(totalPromptQuality)}`}>{totalPromptQuality}</span><span className="text-xl text-slate-500 font-bold">/7</span></div>
                     <div className={`px-3 py-1 rounded inline-block border font-bold text-sm ${getPromptBadgeClasses(totalPromptQuality)}`}>{promptQualityLabel} Potential</div>
@@ -1906,11 +1906,11 @@ Optimization Summary: ${optimizationSummary}
                   </div>
                 )}
 
-                <div className="flex gap-4 relative z-10">
-                  <button onClick={handleCopyInitialReport} disabled={!isOriginalScored} className={`flex-1 py-3.5 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors shadow-lg text-sm ${!isOriginalScored ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-blue-600 hover:bg-blue-500 text-white'}`}>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 relative z-10">
+                  <button onClick={handleCopyInitialReport} disabled={!isOriginalScored} className={`flex-1 py-3.5 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors shadow-lg text-xs sm:text-sm ${!isOriginalScored ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-blue-600 hover:bg-blue-500 text-white'}`}>
                     {isInitialCopied ? <Check size={18} /> : <Clipboard size={18} />} Export Report
                   </button>
-                  <button onClick={() => setIsSaveModalOpen(true)} disabled={!isOriginalScored} className={`px-6 py-3.5 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors shadow-lg text-sm ${!isOriginalScored ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-slate-700 hover:bg-slate-600 border border-slate-600 text-white'}`}>
+                  <button onClick={() => setIsSaveModalOpen(true)} disabled={!isOriginalScored} className={`flex-1 py-3.5 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors shadow-lg text-xs sm:text-sm ${!isOriginalScored ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700' : 'bg-slate-700 hover:bg-slate-600 border border-slate-600 text-white'}`}>
                     <BookmarkPlus size={18} /> Save to Library
                   </button>
                 </div>
