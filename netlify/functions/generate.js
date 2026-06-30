@@ -1,3 +1,25 @@
+const crypto = require('crypto');
+
+function verifyToken(token, secret) {
+  try {
+    const parts = token.split('-');
+    if (parts.length !== 3) return false;
+    const [role, expiresAtStr, signature] = parts;
+    const expiresAt = parseInt(expiresAtStr);
+    if (isNaN(expiresAt) || Date.now() > expiresAt) return false;
+    
+    const expectedSignature = crypto
+      .createHmac('sha256', secret)
+      .update(`${role}-${expiresAtStr}`)
+      .digest('hex')
+      .slice(0, 12);
+      
+    return signature === expectedSignature;
+  } catch (e) {
+    return false;
+  }
+}
+
 exports.handler = async (event, context) => {
   // 1. Enforce HTTPS/POST method (Security+ constraint)
   if (event.httpMethod !== 'POST') {
@@ -11,7 +33,33 @@ exports.handler = async (event, context) => {
     };
   }
 
-  // 2. Validate API Key injection at runtime (Security+ constraint)
+  // 2. Enforce Access Secret verification (If configured on Netlify)
+  const accessSecret = process.env.ACCESS_SECRET;
+  const masterKey = process.env.MASTER_KEY;
+  if (accessSecret) {
+    const authHeader = event.headers.authorization || event.headers.Authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return {
+        statusCode: 401,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: 'Unauthorized: Missing or invalid access token' })
+      };
+    }
+
+    const token = authHeader.split(' ')[1];
+    const isValidToken = verifyToken(token, accessSecret);
+    const isMasterKey = masterKey && token === masterKey;
+
+    if (!isValidToken && !isMasterKey) {
+      return {
+        statusCode: 401,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: 'Unauthorized: Access code expired or invalid' })
+      };
+    }
+  }
+
+  // 3. Validate API Key injection at runtime (Security+ constraint)
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.error('[SECURITY ERROR] GEMINI_API_KEY is not configured on Netlify environment variables.');
@@ -27,7 +75,7 @@ exports.handler = async (event, context) => {
   try {
     const body = JSON.parse(event.body);
     
-    // 3. Proxy request to Gemini API securely from the backend
+    // 4. Proxy request to Gemini API securely from the backend
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

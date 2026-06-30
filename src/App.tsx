@@ -2,6 +2,8 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Clipboard, Bot, Loader2, Lock, Unlock, Target, Check, Lightbulb, Sparkles, ArrowRight, AlertTriangle, ShieldCheck, Settings2, ChevronDown, ChevronUp, Mic, BookOpen, Download, Upload, FileDown, Folder, Play, BookmarkPlus, X, FileText, Pencil, Trash2, FolderInput, FolderPlus, MoreHorizontal, CheckSquare, Square } from 'lucide-react';
 
+let onUnauthorizedError = null;
+
 const callGeminiAPI = async (prompt, isJson = false, customSchema = null) => {
   const url = `/api/generate`;
   
@@ -53,15 +55,24 @@ const callGeminiAPI = async (prompt, isJson = false, customSchema = null) => {
   
   for (let i = 0; i < retries; i++) {
     try {
+      const token = localStorage.getItem('access_token');
+      const headers = { "Content-Type": "application/json" };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: headers,
         body: JSON.stringify(payload)
       });
       
       if (!response.ok) {
+        if (response.status === 401) {
+          if (onUnauthorizedError) onUnauthorizedError();
+          throw new Error('Unauthorized: 401');
+        }
         const errorData = await response.json();
-        // Extract message from Gemini's nested error object or the response itself
         const msg = errorData.error?.message || errorData.error || `HTTP error ${response.status}`;
         throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
       }
@@ -70,6 +81,7 @@ const callGeminiAPI = async (prompt, isJson = false, customSchema = null) => {
       const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
       return isJson ? JSON.parse(text) : text;
     } catch (err) {
+      if (err.message.includes('401')) throw err;
       if (i === retries - 1) throw new Error(err.message || "Failed to generate response after multiple attempts.");
       await new Promise(res => setTimeout(res, delays[i]));
     }
@@ -307,7 +319,153 @@ const App = () => {
   const debugMode = false;
 
   // Global Navigation State
-  const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard' | 'library'
+  const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard' | 'library' | 'admin'
+
+  // Authentication State
+  const [accessToken, setAccessToken] = useState(() => localStorage.getItem('access_token'));
+  const [loginError, setLoginError] = useState('');
+  const [passcodeInput, setPasscodeInput] = useState('');
+  const [timeRemaining, setTimeRemaining] = useState('');
+  
+  // Admin Generator State
+  const [adminMasterKey, setAdminMasterKey] = useState('');
+  const [adminDuration, setAdminDuration] = useState('24');
+  const [generatedCode, setGeneratedCode] = useState('');
+  const [adminError, setAdminError] = useState('');
+  const [adminSuccess, setAdminSuccess] = useState('');
+
+  const handleLogout = (message = '') => {
+    localStorage.removeItem('access_token');
+    setAccessToken(null);
+    setPasscodeInput('');
+    if (message) {
+      setLoginError(message);
+    }
+  };
+
+  // Bind global unauthorized callback
+  useEffect(() => {
+    onUnauthorizedError = () => {
+      handleLogout('Session expired or unauthorized. Please re-enter code.');
+    };
+    return () => {
+      onUnauthorizedError = null;
+    };
+  }, []);
+
+  // Track Token Expiry
+  useEffect(() => {
+    if (!accessToken) {
+      setTimeRemaining('');
+      return;
+    }
+    
+    // Dev Mode bypass
+    if (accessToken === 'dev-bypass') {
+      setTimeRemaining('Dev Mode (No Limit)');
+      return;
+    }
+
+    const checkExpiry = () => {
+      try {
+        const parts = accessToken.split('-');
+        if (parts.length === 3) {
+          const expiresAt = parseInt(parts[1]);
+          if (isNaN(expiresAt)) return;
+          
+          const diff = expiresAt - Date.now();
+          if (diff <= 0) {
+            handleLogout('Your access passcode has expired.');
+            return;
+          }
+          
+          const hours = Math.floor(diff / (1000 * 60 * 60));
+          const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const secs = Math.floor((diff % (1000 * 60)) / 1000);
+          
+          const pad = (n) => String(n).padStart(2, '0');
+          setTimeRemaining(`${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`);
+        } else {
+          setTimeRemaining('Valid Session');
+        }
+      } catch (e) {
+        setTimeRemaining('Valid Session');
+      }
+    };
+
+    checkExpiry();
+    const interval = setInterval(checkExpiry, 1000);
+    return () => clearInterval(interval);
+  }, [accessToken]);
+
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    if (!passcodeInput.trim()) {
+      setLoginError('Passcode cannot be empty.');
+      return;
+    }
+
+    const code = passcodeInput.trim();
+    if (code === 'dev-bypass') {
+      localStorage.setItem('access_token', code);
+      setAccessToken(code);
+      setLoginError('');
+      return;
+    }
+
+    try {
+      const parts = code.split('-');
+      if (parts.length === 3 && parts[0] === 'emp') {
+        const expiresAt = parseInt(parts[1]);
+        if (isNaN(expiresAt) || Date.now() > expiresAt) {
+          setLoginError('This passcode has expired.');
+          return;
+        }
+
+        localStorage.setItem('access_token', code);
+        setAccessToken(code);
+        setLoginError('');
+        return;
+      }
+    } catch (err) {}
+
+    // Allow it to be saved as the Master Key.
+    // The serverless function will reject it upon the first API call if it is invalid.
+    localStorage.setItem('access_token', code);
+    setAccessToken(code);
+    setLoginError('');
+  };
+
+  const handleGenerateCode = async (e) => {
+    e.preventDefault();
+    setAdminError('');
+    setAdminSuccess('');
+    setGeneratedCode('');
+
+    if (!adminMasterKey.trim()) {
+      setAdminError('Master Key is required.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: adminMasterKey.trim(), durationHours: parseFloat(adminDuration) })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP error ${response.status}`);
+      }
+
+      const data = await response.json();
+      setGeneratedCode(data.code);
+      setAdminSuccess('Access code generated successfully!');
+    } catch(err) {
+      setAdminError(err.message || 'Failed to generate code.');
+    }
+  };
 
   // Library State
   const [savedPrompts, setSavedPrompts] = useState([]);
@@ -1558,18 +1716,102 @@ Optimization Summary: ${optimizationSummary}
     </div>
   );
 
+  if (!accessToken) {
+    return (
+      <div className="min-h-screen bg-[#0b1120] font-sans flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Decorative Floating Glowing Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 md:p-10 shadow-2xl relative z-10">
+          <div className="text-center mb-8">
+            <div className="mx-auto w-16 h-16 bg-blue-600/10 text-blue-400 rounded-2xl flex items-center justify-center border border-blue-500/20 mb-4 shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+              <Bot size={36} />
+            </div>
+            <h1 className="text-2xl font-black text-white tracking-tight">Prompt Optimizer</h1>
+            <p className="text-slate-400 text-sm mt-1">Portfolio Evaluation Dashboard</p>
+          </div>
+
+          <form onSubmit={handleLoginSubmit} className="space-y-6">
+            <div>
+              <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2.5">Access Passcode</label>
+              <div className="relative">
+                <input 
+                  type="password" 
+                  value={passcodeInput}
+                  onChange={(e) => setPasscodeInput(e.target.value)}
+                  placeholder="Enter your limited-time code..."
+                  className="w-full bg-slate-950/80 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-2xl p-4 text-white text-sm outline-none transition-all pr-12 placeholder-slate-600"
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600">
+                  <Lock size={18} />
+                </div>
+              </div>
+              {loginError && (
+                <div className="text-red-400 text-xs font-bold mt-2 flex items-center gap-1.5 bg-red-950/20 border border-red-500/10 p-2.5 rounded-xl">
+                  <AlertTriangle size={14} /> {loginError}
+                </div>
+              )}
+            </div>
+
+            <button 
+              type="submit" 
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 flex items-center justify-center gap-2 text-sm"
+            >
+              Enter Dashboard <ArrowRight size={16} />
+            </button>
+          </form>
+
+          {(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && (
+            <div className="mt-8 pt-6 border-t border-slate-800/60 text-center">
+              <button 
+                onClick={() => {
+                  localStorage.setItem('access_token', 'dev-bypass');
+                  setAccessToken('dev-bypass');
+                  setLoginError('');
+                }}
+                className="text-xs text-slate-500 hover:text-slate-300 transition-colors font-bold"
+              >
+                ⚙️ Local Dev Bypass (Only works if Server Auth is disabled)
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#0b1120] font-sans text-slate-200 pb-20">
       
       {/* Top Navigation */}
       <div className="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-4 md:px-8 py-3 flex gap-4">
-          <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-2 font-bold px-4 py-2 rounded-md transition-colors ${currentView === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
-            <Target size={18} /> Dashboard
-          </button>
-          <button onClick={() => setCurrentView('library')} className={`flex items-center gap-2 font-bold px-4 py-2 rounded-md transition-colors ${currentView === 'library' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
-            <BookOpen size={18} /> Prompt Library
-          </button>
+        <div className="max-w-5xl mx-auto px-4 md:px-8 py-3 flex justify-between items-center">
+          <div className="flex gap-4">
+            <button onClick={() => setCurrentView('dashboard')} className={`flex items-center gap-2 font-bold px-4 py-2 rounded-md transition-colors ${currentView === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+              <Target size={18} /> Dashboard
+            </button>
+            <button onClick={() => setCurrentView('library')} className={`flex items-center gap-2 font-bold px-4 py-2 rounded-md transition-colors ${currentView === 'library' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+              <BookOpen size={18} /> Prompt Library
+            </button>
+            {(!accessToken || !accessToken.startsWith('emp-')) && (
+              <button onClick={() => setCurrentView('admin')} className={`flex items-center gap-2 font-bold px-4 py-2 rounded-md transition-colors ${currentView === 'admin' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'}`}>
+                <Lock size={18} /> Owner Console
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-4">
+            {timeRemaining && (
+              <span className="text-xs bg-slate-950 border border-slate-800 text-slate-300 font-black px-4 py-2 rounded-full tracking-wider flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                {timeRemaining}
+              </span>
+            )}
+            <button onClick={() => handleLogout()} className="text-xs text-slate-400 hover:text-red-400 hover:bg-red-500/10 font-bold px-4 py-2 rounded-md border border-slate-800 hover:border-red-500/20 transition-all">
+              Log Out
+            </button>
+          </div>
         </div>
       </div>
 
@@ -2377,6 +2619,95 @@ Optimization Summary: ${optimizationSummary}
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* --- OWNER CONSOLE VIEW --- */}
+        {currentView === 'admin' && (
+          <div className="max-w-xl mx-auto border border-slate-800 bg-slate-900 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl relative overflow-hidden">
+            {/* Glowing effect */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div>
+              <h2 className="text-2xl font-black text-white flex items-center gap-2">
+                <Lock size={22} className="text-blue-500" /> Owner Console
+              </h2>
+              <p className="text-xs text-slate-400 mt-1">Generate time-limited passcode tokens for recruiters and employers.</p>
+            </div>
+
+            <form onSubmit={handleGenerateCode} className="space-y-5">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Master Key</label>
+                <input 
+                  type="password" 
+                  value={adminMasterKey}
+                  onChange={(e) => setAdminMasterKey(e.target.value)}
+                  placeholder="Enter your server MASTER_KEY..."
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-2xl p-3.5 text-white text-sm outline-none transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Access Expiry Duration</label>
+                <select 
+                  value={adminDuration}
+                  onChange={(e) => setAdminDuration(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-2xl p-3.5 text-white text-sm outline-none transition-all"
+                >
+                  <option value="2">2 Hours</option>
+                  <option value="12">12 Hours</option>
+                  <option value="24">24 Hours (1 Day)</option>
+                  <option value="72">72 Hours (3 Days)</option>
+                  <option value="168">168 Hours (7 Days)</option>
+                </select>
+              </div>
+
+              {adminError && (
+                <div className="text-red-400 text-xs font-bold bg-red-950/20 border border-red-500/15 p-3.5 rounded-2xl flex items-center gap-2">
+                  <AlertTriangle size={16} /> {adminError}
+                </div>
+              )}
+
+              {adminSuccess && (
+                <div className="text-emerald-400 text-xs font-bold bg-emerald-950/20 border border-emerald-500/15 p-3.5 rounded-2xl flex items-center gap-2">
+                  <ShieldCheck size={16} /> {adminSuccess}
+                </div>
+              )}
+
+              <button 
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 px-6 rounded-2xl transition-all duration-300 shadow-md shadow-blue-500/10 hover:shadow-blue-500/20 text-sm"
+              >
+                Generate Access Passcode
+              </button>
+            </form>
+
+            {generatedCode && (
+              <div className="bg-slate-950 border border-slate-800 p-5 rounded-2xl space-y-3 relative">
+                <label className="block text-xs font-black text-blue-400 uppercase tracking-widest">Shareable Passcode</label>
+                <div className="flex gap-2">
+                  <input 
+                    type="text" 
+                    readOnly 
+                    value={generatedCode}
+                    className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-300 select-all outline-none font-mono"
+                  />
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(generatedCode);
+                      alert('Copied to clipboard!');
+                    }}
+                    className="bg-slate-800 hover:bg-slate-700 text-white px-4 rounded-xl text-xs font-bold border border-slate-700 transition-colors"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <p className="text-[10px] text-slate-500">Copy this code and send it to your recruiter. It will auto-expire exactly {adminDuration} hours after generation.</p>
+              </div>
+            )}
+          </div>
+        )}
+
             {/* Custom Themed Modal Implementation */}
             {modalConfig.isOpen && (
               <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md animate-in fade-in duration-200">
@@ -2451,9 +2782,6 @@ Optimization Summary: ${optimizationSummary}
               </div>
             )}
           </div>
-        )}
-
-      </div>
 
       {/* Save Modal */}
       {isSaveModalOpen && (
