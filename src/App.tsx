@@ -1829,7 +1829,7 @@ Optimization Summary: ${optimizationSummary}
         {/* --- DASHBOARD VIEW --- */}
         {currentView === 'dashboard' && (
           <>
-            <h1 className="text-white text-3xl font-black mb-8 tracking-tight">AI Prompt Optimizer</h1>
+            <h1 className="text-white text-3xl sm:text-4xl font-black mb-8 tracking-tight text-center">Prompt Optimizer</h1>
 
             <div className="border-none sm:border border-slate-800 bg-transparent sm:bg-slate-900 rounded-none sm:rounded-2xl p-0 sm:p-6 md:p-8 space-y-6 mb-12 shadow-none sm:shadow-sm">
               <h2 className="text-2xl font-black text-slate-200 ml-2 mb-2 tracking-tight">Phase 1: Original Prompt Evaluation</h2>
@@ -2257,22 +2257,22 @@ Optimization Summary: ${optimizationSummary}
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-              <h1 className="text-2xl sm:text-3xl font-black text-white">Local Prompt Library</h1>
-              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-                <button onClick={handleCreateFolder} className="flex-1 sm:flex-initial bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors shadow-lg shadow-blue-500/20">
+            <div className="flex flex-col items-center gap-6 mb-8">
+              <h1 className="text-3xl sm:text-4xl font-black text-white text-center">Prompt Library</h1>
+              <div className="flex flex-wrap justify-center gap-2 w-full">
+                <button onClick={handleCreateFolder} className="flex-1 sm:flex-initial bg-blue-600 hover:bg-blue-500 text-white px-3 py-2.5 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors shadow-lg shadow-blue-500/20">
                   <FolderPlus size={14} /> Add Folder
                 </button>
-                <button onClick={handleExportJSON} className="flex-1 sm:flex-initial bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
+                <button onClick={handleExportJSON} className="flex-1 sm:flex-initial bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2.5 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
                   <Download size={14} /> Export Backup
                 </button>
                 <div className="flex-1 sm:flex-initial relative">
-                  <button onClick={() => fileInputRef.current?.click()} className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
+                  <button onClick={() => fileInputRef.current?.click()} className="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2.5 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
                     <Upload size={14} /> Import Backup
                   </button>
                   <input type="file" accept=".json" ref={fileInputRef} onChange={handleImportJSON} className="hidden" />
                 </div>
-                <button onClick={() => handleExportPDF()} className="flex-1 sm:flex-initial bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
+                <button onClick={() => handleExportPDF()} className="flex-1 sm:flex-initial bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-3 py-2.5 sm:px-4 rounded-md font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-colors">
                   <FileDown size={14} /> Export PDF
                 </button>
               </div>
